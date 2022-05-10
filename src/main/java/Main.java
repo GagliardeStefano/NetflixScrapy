@@ -20,8 +20,8 @@ public class Main {
         HashMap<String, Integer> hashMap = new HashMap<>();
 
 
-        int idEpisodio = 1;
-        int idStagione = 1;
+        int idEpisodio = 0;
+        int idStagione = 0;
         int idCategoria = 0;
 
         File linkSerieCategoria = new File("C:\\xampp\\htdocs\\CTVS\\serieTv\\SerieCategoria.csv");
@@ -81,7 +81,7 @@ public class Main {
             arraySerie = row.split(regex);
 
             InizioLettura++;
-            if (InizioLettura >= 0){
+            if (InizioLettura >= 1358){
 
                 if (arraySerie[8].equals(checkSerie)) {
 
@@ -131,10 +131,27 @@ public class Main {
                         System.out.println("DOPO IF: nome del link: "+href);
 
 
-                        String path = ".serieTV/imgEpisodi/"+arraySerie[1].replace(" ","") //per immagini episodi
+                        String path = "./serieTV/imgEpisodi/"+arraySerie[1].replace(" ","") //per immagini episodi
                                 .replace("&","")
                                 .replace("'","")
-                                .replace(":","");
+                                .replace(":","")
+                                .replace(",","")
+                                .replace("\"","")
+                                .replace("/","")
+                                .replace("*","")
+                                .replace("¿", "")
+                                .replace("è", "e")
+                                .replace("é", "e")
+                                .replace("ì", "i")
+                                .replace("ò", "o")
+                                .replace("ù", "u")
+                                .replace("ô", "o")
+                                .replace("û", "u")
+                                .replace("î", "i")
+                                .replace("í", "i")
+                                .replace("ñ", "n")
+                                .replace("â", "a")
+                                .replace("ó", "o");
 
 
                         File destinazione = new File( "C:\\xampp\\htdocs\\CTVS\\serieTv\\imgEpisodi\\"+arraySerie[1].replace(" ","")
@@ -143,7 +160,21 @@ public class Main {
                                 .replace(",","")
                                 .replace(":","")
                                 .replace("\"","")
-                                .replace("/",""));
+                                .replace("/","")
+                                .replace("*","")
+                                .replace("¿", "")
+                                .replace("è", "e")
+                                .replace("é", "e")
+                                .replace("ì", "i")
+                                .replace("ò", "o")
+                                .replace("ù", "u")
+                                .replace("ô", "o")
+                                .replace("û", "u")
+                                .replace("î", "i")
+                                .replace("í", "i")
+                                .replace("ñ", "n")
+                                .replace("â", "a")
+                                .replace("ó", "o"));
                         if (!destinazione.exists()){
                             destinazione.mkdir();
                         }
@@ -155,7 +186,21 @@ public class Main {
                                 .replace(",","")
                                 .replace(":","")
                                 .replace("/","")
-                                .replace("\"",""));  //destinazione per salvare le immagini orizzontali
+                                .replace("\"","")
+                                .replace("*","")
+                                .replace("¿", "")
+                                .replace("è", "e")
+                                .replace("é", "e")
+                                .replace("ì", "i")
+                                .replace("ò", "o")
+                                .replace("ù", "u")
+                                .replace("ô", "o")
+                                .replace("û", "u")
+                                .replace("î", "i")
+                                .replace("í", "i")
+                                .replace("ñ", "n")
+                                .replace("â", "a")
+                                .replace("ó", "o"));  //destinazione per salvare le immagini orizzontali
                         if (!percorsoImg.exists()){
                             percorsoImg.mkdir();
                         }
@@ -166,20 +211,34 @@ public class Main {
                                 .replace(",","")
                                 .replace(":","")
                                 .replace("/","")
-                                .replace("\"","")+"Orizzontale"+".jpg";
+                                .replace("\"","")
+                                .replace("*","")
+                                .replace("¿", "")
+                                .replace("è", "e")
+                                .replace("é", "e")
+                                .replace("ì", "i")
+                                .replace("ò", "o")
+                                .replace("ù", "u")
+                                .replace("ô", "o")
+                                .replace("û", "u")
+                                .replace("î", "i")
+                                .replace("í", "i")
+                                .replace("ñ", "n")
+                                .replace("â", "a")
+                                .replace("ó", "o")+"Orizzontale"+".jpg";
 
 
 
-                        writerSerie.write(href.substring(33, 40)+",");
+                        writerSerie.write(href.substring(33, 41)+",");
 
                         Elements containerDati = netflix.select("div.details-container");
                         Elements titleInfo = containerDati.select("div.title-info");
                         Element nomeSerie = titleInfo.select("h1").first();
-                        writerSerie.write(nomeSerie.text()+","); //nome
+                        writerSerie.write(("\""+nomeSerie.text()+"\"")+","); //nome
 
-                        Elements titleDescrizione = containerDati.select("div.title-info-synopsis-talent");
+                        Elements titleDescrizione = containerDati.select("div.title-info-synopsis");
                         Element trama = titleDescrizione.select("div").first();
-                        writerSerie.write(trama.text()+","); //trama
+                        writerSerie.write(("\""+trama.text()+"\"")+","); //trama
 
                         String nomeLocandina = arraySerie[1].replace(" ","")  //nome dell'immagine orizzontale
                                 .replace("&","")
@@ -194,7 +253,7 @@ public class Main {
                                 .replace(",","")
                                 .replace(":","")
                                 .replace("\"","")+"/"+nomeLocandina;
-
+//
                         downloadImageOrizzontale(locandina,nomeLocandina, String.valueOf(percorsoImg));
                         writerSerie.write(hrefImg+",");
                         writerSerie.write(arraySerie[13]+","); //voto
@@ -232,7 +291,7 @@ public class Main {
 
                             System.out.println("DOPO FOR STAGIONI");
                             //STAGIONI
-                            writerStagioni.write(href.substring(33, 40)+",");  //scrivo nel file l'id della Serie TV
+                            writerStagioni.write(href.substring(33, 41)+",");  //scrivo nel file l'id della Serie TV
                             writerStagioni.write(1+i+",");  //scrivo nel file il numero della stagione
 
                             Elements episodi = season.get(i).select("div.episodes-container");  //seleziono l'elemento eiesimo di div con classe episodes-container
@@ -243,25 +302,26 @@ public class Main {
                             Element anni = season.get(i).select("div.season-release-year").first();
                             writerStagioni.write(anni.text()+","); //scrivo nel file l'anno in cui è uscita la stagione
 
-                            writerStagioni.write(idStagione++ + "\n");   //id della stagione
-
+                            idStagione++;
+                            writerStagioni.write(idStagione + "\n");   //id della stagione
                             writerStagioni.flush();
 
                             for (int j=0; j<nEpisodi.size(); j++) { //ciclo for per gli episodi
                                 //EPISODI
 
-                                writerEpisodi.write(idEpisodio++ + ","); //id episodio
+                                idEpisodio++;
+                                writerEpisodi.write(idEpisodio + ","); //id episodio
 
                                 //seleziono l'elemento eiesimo di div con classe episode-metadata
                                 Elements metadata = nEpisodi.get(j).select("div.episode-metadata");
                                 Element titolo = metadata.select("h3").first(); //seleziono il tag <h3>
-                                writerEpisodi.write(titolo.text() + ",");   //scrivo nel file il testo (titolo) contenente in <h3>
+                                writerEpisodi.write(("\""+titolo.text()+"\"") + ",");   //scrivo nel file il testo (titolo) contenente in <h3>
 
                                 Element durata = metadata.select("span").first();   //seleziono il tag <span>
                                 writerEpisodi.write(durata.text() + ",");   //scrivo nel file il testo (durata episodio) contenente in <span>
 
                                 Element descrizione = nEpisodi.get(j).select("p.epsiode-synopsis").first(); //seleziono il tag <p> con classe epsiode-synopsis
-                                writerEpisodi.write(descrizione.text() + ",");  //scrivo nel file il testo (riassunto episodio) contenente in <p>
+                                writerEpisodi.write(("\""+descrizione.text()+"\"") + ",");  //scrivo nel file il testo (riassunto episodio) contenente in <p>
 
                                 Elements locandine = nEpisodi.get(j).select("figure.episode-thumbnail");//seleziono il tag <figure> con classe epsiode-thumbnail
                                 Element img = locandine.select("img").first();//seleziono il tag <img>
@@ -273,7 +333,7 @@ public class Main {
 
                                 writerEpisodi.write(pathComplete+","); //scrivo nel file il path
 
-                                writerEpisodi.write( (idStagione - 1) + "\n");  //id della stagione
+                                writerEpisodi.write( (idStagione) + "\n");  //id della stagione
 
                                 writerEpisodi.flush();
 
@@ -294,7 +354,7 @@ public class Main {
                                 if (hashMap.containsKey(CategoriaReplace)){
 
                                     System.out.println("DOPO IF: "+CategoriaReplace);
-                                    writerLink.write(href.substring(33,40)+",");
+                                    writerLink.write(href.substring(33,41)+",");
                                     writerLink.write(hashMap.get(CategoriaReplace)+"\n");
 
                                     writerLink.flush();
@@ -312,7 +372,7 @@ public class Main {
                                     writerCategoria.write(CategoriaReplace+",");
                                     writerCategoria.write(idCategoria+"\n");
 
-                                    writerLink.write(href.substring(33,40)+",");
+                                    writerLink.write(href.substring(33,41)+",");
                                     writerLink.write(idCategoria+"\n");
 
                                     writerLink.flush();
